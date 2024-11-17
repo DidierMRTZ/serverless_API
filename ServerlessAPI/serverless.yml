@@ -1,0 +1,50 @@
+# "org" ensures this Service is used with the correct Serverless Framework Access Key.
+org: celerix
+# "app" enables Serverless Framework Dashboard features and sharing them with other Services.
+app: serverless-app
+# "service" is the name of this project. This will also be added to your AWS resource names.
+service: ServerlessAPI
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:913524901853:table/usersTable 
+
+functions:
+  GetUser:
+    handler: src/GetUser.GetUser
+    events:
+      - httpApi:
+          path: /users
+          method: get
+  register:
+    handler: src/RegisterUser.register
+    events:
+      - httpApi:
+          path: /register
+          method: post
+
+
+resources: 
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: usersTable
+        AttributeDefinitions:
+          - AttributeName: email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    
+

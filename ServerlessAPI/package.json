@@ -1,0 +1,16 @@
+{
+  "name": "serverless",
+  "version": "20.10.1",
+  "description": "Api con serverless",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1692.0",
+    "crypto-js": "^4.2.0",
+    "uuid": "^11.0.3"
+  }
+}
