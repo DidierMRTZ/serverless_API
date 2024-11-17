@@ -13,12 +13,12 @@ function dataDecrypt(encryptedData, key) {
 }
 // Ejemplo de uso
 const key = "JSLOVER"; // Clave para el cifrado
-const data = "Este es un mensaje secreto"; // Datos a cifrar
+const data = "password"; // Datos a cifrar
 ;
 const datastring = dataEncrypt(data, key)
 console.log(datastring)
 
-const datades = dataDecrypt(datastring , key)
+const datades = dataDecrypt("U2FsdGVkX19vclEF8szo1dNl/E/cTW1BEkkuniMjATs=" , key)
 console.log(datades)
 
 const {email,password} ={email:'email'}

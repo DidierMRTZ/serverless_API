@@ -8,7 +8,7 @@ function dataEncrypt(data,key) {
 
 exports.register= async (event) => {
   try {
-    const {email,name,password} = JSON.parse(event.body)
+    let {email,name,password} = JSON.parse(event.body)
     const createdAT = new Date()
     const key = "JSLOVER"; // Clave para el cifrado
     // Configurar el cliente DynamoDB
@@ -22,14 +22,14 @@ exports.register= async (event) => {
       };
     }
     else{
-      const passwordEncryt= dataEncrypt(password,key)
+      password= dataEncrypt(password,key)
       // Insertar un elemento en DynamoDB
       const params = {
         TableName: 'usersTable',
         Item: {
           email, // Clave primaria
           name,
-          passwordEncryt,
+          password,
         },
       };
       await dynamoDB.put(params).promise();
@@ -38,7 +38,7 @@ exports.register= async (event) => {
         body: JSON.stringify({
           email: email,
           name: name,
-          password: passwordEncryt // Clave cifrada
+          password: password // Clave cifrada
         }),
       };
     }
