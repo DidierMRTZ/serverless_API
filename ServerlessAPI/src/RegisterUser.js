@@ -15,7 +15,7 @@ exports.register= async (event) => {
     const dynamoDB = new AWS.DynamoDB.DocumentClient();
     if (!password || password.trim() === ""){
       return {
-        statusCode: 400,
+        statusCode: 403,
         body: JSON.stringify({
           message: "Password Requerid"
         }),

@@ -1,6 +1,7 @@
 const CryptoJS = require("crypto-js")
 const AWS = require("aws-sdk")
 const JWT = require("jsonwebtoken")
+const credentials = require('./credentials.js')
 
 // Función para descifrar datos
 function dataDecrypt(encryptedData, key) {
@@ -33,13 +34,12 @@ exports.login= async (event) => {
       const passwordDecrypt = dataDecrypt(result.Item.password,key)
       // Si las contraseñas coinciden
       if (passwordDecrypt == password){
+        const token = JWT.sign({email:email,password:password},credentials.SECRET_JWT_KEY,{ expiresIn: '10m'})
         return {
           statusCode: 200,
           body: JSON.stringify({
-            message: "Consulta exitosa token JWD",
-            data: result.Item,
-            password: password,
-            password2: passwordDecrypt
+            message: "Exito al autenticar",
+            token: token
           }),
         };
       }
@@ -48,7 +48,6 @@ exports.login= async (event) => {
           statusCode: 400,
           body: JSON.stringify({
             message: "Contraseña incorrecta",
-            data: result.Item,
           }),
         };
       }

@@ -14,6 +14,11 @@ provider:
         - dynamodb:*
       Resource:
         - arn:aws:dynamodb:us-east-1:913524901853:table/usersTable 
+    - Effect: Allow
+      Action:
+        - dynamodb:*
+      Resource:
+        - arn:aws:dynamodb:us-east-1:913524901853:table/propertiesTable
 
 functions:
   GetUser:
@@ -34,7 +39,18 @@ functions:
       - httpApi:
           path: /login
           method: post
-
+  properties:
+    handler: src/Getproperties.properties
+    events:
+      - httpApi:
+          path: /properties
+          method: get
+  createproperties:
+    handler: src/Createproperties.properties
+    events:
+      - httpApi:
+          path: /properties
+          method: post
 
 resources: 
   Resources:
@@ -47,6 +63,19 @@ resources:
             AttributeType: S
         KeySchema:
           - AttributeName: email
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    propertiesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: propertiesTable
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
